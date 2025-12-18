@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
             Skip the spam. <br />
             <span className="relative inline-block mt-2">
               <span className="relative z-10 text-indigo-600">Catch every opportunity.</span>
-              <span className="absolute inset-x-0 bottom-2 h-6 bg-[#FFE66D] border-2 border-black -z-0 -rotate-1"></span>
+              <span className="absolute inset-x-0 bottom-0 h-36 bg-[#FFE66D] border-2 border-black -z-0 -rotate-1"></span>
             </span>
           </h1>
           
