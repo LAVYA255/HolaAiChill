@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ViewState } from '../App';
-
+import logo from '../logo.png';
 interface FooterProps {
   onNavigate: (view: ViewState, sectionId?: string) => void;
 }
@@ -18,7 +18,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           >
             <div className="bg-black p-0 rounded-xl border-2 border-black neo-shadow flex items-center justify-center overflow-hidden w-10 h-10">
               <img 
-                src="logo.png" 
+                src={logo} 
                 alt="Hola AI Logo" 
                 className="w-full h-full object-cover"
               />
