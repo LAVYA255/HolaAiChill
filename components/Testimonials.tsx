@@ -6,7 +6,7 @@ const Testimonials: React.FC = () => {
     <section id="testimonials" className="py-24 px-6 bg-[#f8f9fa] border-y-2 border-black">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">Trusted by busy professionals.</h2>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">Trusted By Busy Professionals.</h2>
           <p className="text-lg font-bold text-gray-500">Real stories from people who took back control of their phone.</p>
         </div>
 

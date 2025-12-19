@@ -2,43 +2,48 @@
 import React from 'react';
 import { Check, Sparkles, Zap, Shield } from 'lucide-react';
 import FAQ from './FAQ';
+import { ViewState } from '../App';
 
-const Pricing: React.FC = () => {
+interface PricingProps {
+  onNavigate: (view: ViewState, sectionId?: string) => void;
+}
+
+const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
   const handlePricingCTA = () => {
-    window.open('https://play.google.com/store/apps/details?id=com.holavoicemail.app', '_blank');
+    onNavigate('home', 'cta');
   };
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in overflow-x-hidden">
       {/* Pricing Hero */}
-      <section className="py-20 px-6 bg-[#FFE66D] border-b-4 border-black text-center">
+      <section className="py-16 md:py-20 px-4 md:px-6 bg-[#FFE66D] border-b-4 border-black text-center">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-block bg-white border-2 border-black px-4 py-1 rounded-full font-black text-xs uppercase mb-6 neo-shadow">
+          <div className="inline-block bg-white border-2 border-black px-4 py-1 rounded-full font-black text-[10px] md:text-xs uppercase mb-6 neo-shadow">
             Start your 7-day free trial
           </div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">Simple, Honest Pricing.</h1>
-          <p className="text-xl font-bold text-gray-800 mb-8 max-w-2xl mx-auto">
+          <h1 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 leading-tight text-black">Simple, Honest Pricing.</h1>
+          <p className="text-lg md:text-xl font-bold text-gray-800 mb-8 max-w-2xl mx-auto">
             Experience the magic of smart voicemail. No hidden fees, no commitment during trial.
           </p>
         </div>
       </section>
 
       {/* Pricing Cards */}
-      <section id="pricing" className="py-24 px-6 bg-white">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+      <section id="pricing" className="py-20 md:py-24 px-4 md:px-6 bg-white">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           
           {/* Monthly Plan */}
-          <div className="bg-white border-4 border-black p-10 rounded-[40px] neo-shadow-lg flex flex-col hover:-translate-y-2 transition-transform">
-            <div className="mb-8">
-              <h3 className="text-2xl font-black mb-2">Hola AI Plus</h3>
-              <p className="text-gray-500 font-bold">Billed monthly</p>
+          <div className="bg-white border-4 border-black p-8 md:p-10 rounded-[32px] md:rounded-[40px] neo-shadow-lg flex flex-col hover:-translate-y-2 transition-transform">
+            <div className="mb-6 md:mb-8 text-black">
+              <h3 className="text-xl md:text-2xl font-black mb-1 md:mb-2">Hola AI Plus</h3>
+              <p className="text-gray-500 font-bold text-sm md:text-base">Billed monthly</p>
             </div>
-            <div className="flex items-baseline gap-1 mb-8">
-              <span className="text-5xl font-black">$12.99</span>
-              <span className="text-gray-400 font-bold">/month</span>
+            <div className="flex items-baseline gap-1 mb-6 md:mb-8 text-black">
+              <span className="text-4xl md:text-5xl font-black">$12.99</span>
+              <span className="text-gray-400 font-bold text-sm">/month</span>
             </div>
             
-            <ul className="space-y-4 mb-10 flex-1">
+            <ul className="space-y-3 md:space-y-4 mb-8 md:mb-10 flex-1 text-black">
               {[
                 "AI Answering for all missed calls",
                 "Advanced Spam Filtering",
@@ -46,40 +51,40 @@ const Pricing: React.FC = () => {
                 "Customizable AI Personalities",
                 "End-to-End Encryption"
               ].map((feature, i) => (
-                <li key={i} className="flex items-center gap-3 font-bold text-sm">
-                  <div className="bg-[#A0E8AF] border-2 border-black rounded-md p-0.5">
-                    <Check className="w-4 h-4" />
+                <li key={i} className="flex items-start gap-3 font-bold text-xs md:text-sm">
+                  <div className="bg-[#A0E8AF] border-2 border-black rounded-md p-0.5 mt-0.5 shrink-0">
+                    <Check className="w-3 h-3 md:w-4 md:h-4" />
                   </div>
-                  {feature}
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
             
             <button 
               onClick={handlePricingCTA}
-              className="w-full bg-white border-4 border-black py-4 rounded-2xl font-black text-lg neo-shadow hover:bg-gray-50 active:translate-y-1 active:shadow-none transition-all"
+              className="w-full bg-white text-black border-4 border-black py-4 rounded-2xl font-black text-base md:text-lg neo-shadow hover:bg-gray-50 active:translate-y-1 active:shadow-none transition-all"
             >
               Start Free Trial
             </button>
           </div>
 
           {/* Annual Plan */}
-          <div className="bg-[#6366f1] text-white border-4 border-black p-10 rounded-[40px] neo-shadow-lg flex flex-col relative overflow-hidden hover:-translate-y-2 transition-transform">
-            <div className="absolute top-6 right-6 bg-[#FFE66D] text-black border-2 border-black px-3 py-1 rounded-lg font-black text-[10px] uppercase rotate-6 shadow-md">
+          <div className="bg-[#6366f1] text-white border-4 border-black p-8 md:p-10 rounded-[32px] md:rounded-[40px] neo-shadow-lg flex flex-col relative overflow-hidden hover:-translate-y-2 transition-transform">
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-[#FFE66D] text-black border-2 border-black px-2 md:px-3 py-1 rounded-lg font-black text-[8px] md:text-[10px] uppercase rotate-6 shadow-md z-10">
               Best Value
             </div>
             
-            <div className="mb-8">
-              <h3 className="text-2xl font-black mb-2">Annual Pro</h3>
-              <p className="text-indigo-200 font-bold">Billed yearly — Save 35%</p>
+            <div className="mb-6 md:mb-8">
+              <h3 className="text-xl md:text-2xl font-black mb-1 md:mb-2">Annual Pro</h3>
+              <p className="text-indigo-200 font-bold text-sm md:text-base">Billed yearly — Save 35%</p>
             </div>
-            <div className="flex items-baseline gap-1 mb-2">
-              <span className="text-5xl font-black">$99.99</span>
-              <span className="text-indigo-200 font-bold">/year</span>
+            <div className="flex items-baseline gap-1 mb-1 md:mb-2">
+              <span className="text-4xl md:text-5xl font-black">$99.99</span>
+              <span className="text-indigo-200 font-bold text-sm">/year</span>
             </div>
-            <p className="text-xs font-black text-indigo-300 mb-8">Equivalent to $8.33/month</p>
+            <p className="text-[10px] md:text-xs font-black text-indigo-300 mb-8">Equivalent to $8.33/month</p>
             
-            <ul className="space-y-4 mb-10 flex-1">
+            <ul className="space-y-3 md:space-y-4 mb-8 md:mb-10 flex-1">
               {[
                 "Everything in Plus",
                 "Priority AI Processing",
@@ -87,18 +92,18 @@ const Pricing: React.FC = () => {
                 "Premium Support",
                 "Unlimited Call History"
               ].map((feature, i) => (
-                <li key={i} className="flex items-center gap-3 font-bold text-sm">
-                  <div className="bg-white border-2 border-black rounded-md p-0.5">
-                    <Check className="w-4 h-4 text-[#6366f1]" />
+                <li key={i} className="flex items-start gap-3 font-bold text-xs md:text-sm">
+                  <div className="bg-white border-2 border-black rounded-md p-0.5 mt-0.5 shrink-0">
+                    <Check className="w-3 h-3 md:w-4 md:h-4 text-[#6366f1]" />
                   </div>
-                  {feature}
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
             
             <button 
               onClick={handlePricingCTA}
-              className="w-full bg-[#FFE66D] text-black border-4 border-black py-4 rounded-2xl font-black text-lg neo-shadow hover:bg-yellow-300 active:translate-y-1 active:shadow-none transition-all"
+              className="w-full bg-[#FFE66D] text-black border-4 border-black py-4 rounded-2xl font-black text-base md:text-lg neo-shadow hover:bg-yellow-300 active:translate-y-1 active:shadow-none transition-all"
             >
               Claim Annual Deal
             </button>
@@ -107,23 +112,23 @@ const Pricing: React.FC = () => {
       </section>
 
       {/* Feature Grid for Trust */}
-      <section className="py-20 px-6 bg-gray-50 border-y-4 border-black">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="flex flex-col items-center text-center">
-             <div className="w-12 h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Zap className="w-6 h-6" /></div>
-             <p className="font-black text-sm">Instant Setup</p>
+      <section className="py-16 md:py-20 px-4 md:px-6 bg-gray-50 border-y-4 border-black">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="flex flex-col items-center text-center text-black">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Zap className="w-5 h-5 md:w-6 md:h-6" /></div>
+             <p className="font-black text-[10px] md:text-sm">Instant Setup</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-             <div className="w-12 h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Shield className="w-6 h-6" /></div>
-             <p className="font-black text-sm">Safe & Private</p>
+          <div className="flex flex-col items-center text-center text-black">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Shield className="w-5 h-5 md:w-6 md:h-6" /></div>
+             <p className="font-black text-[10px] md:text-sm">Safe & Private</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-             <div className="w-12 h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Sparkles className="w-6 h-6" /></div>
-             <p className="font-black text-sm">No Credit Card Required</p>
+          <div className="flex flex-col items-center text-center text-black">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Sparkles className="w-5 h-5 md:w-6 md:h-6" /></div>
+             <p className="font-black text-[10px] md:text-sm text-center">No CC Required</p>
           </div>
-          <div className="flex flex-col items-center text-center">
-             <div className="w-12 h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Check className="w-6 h-6" /></div>
-             <p className="font-black text-sm">Cancel Anytime</p>
+          <div className="flex flex-col items-center text-center text-black">
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-black rounded-xl neo-shadow flex items-center justify-center mb-4"><Check className="w-5 h-5 md:w-6 md:h-6" /></div>
+             <p className="font-black text-[10px] md:text-sm">Cancel Anytime</p>
           </div>
         </div>
       </section>

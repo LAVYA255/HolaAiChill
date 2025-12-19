@@ -4,13 +4,13 @@ import { Plus } from 'lucide-react';
 
 const AccordionItem = ({ q, a }: { q: string, a: string }) => (
   <details className="group border-b-2 border-black last:border-0">
-    <summary className="flex justify-between items-center p-6 cursor-pointer list-none">
-      <span className="font-black text-lg">{q}</span>
-      <span className="w-8 h-8 bg-white border-2 border-black rounded-lg flex items-center justify-center neo-shadow group-open:rotate-45 transition-transform">
-        <Plus className="w-5 h-5" />
+    <summary className="flex justify-between items-center p-5 md:p-6 cursor-pointer list-none gap-4">
+      <span className="font-black text-base md:text-lg leading-tight text-black">{q}</span>
+      <span className="w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-black rounded-xl flex items-center justify-center neo-shadow shrink-0 group-open:rotate-45 transition-transform">
+        <Plus className="w-5 h-5 md:w-6 md:h-6" />
       </span>
     </summary>
-    <div className="px-6 pb-6 text-gray-600 font-bold leading-relaxed">
+    <div className="px-5 md:px-6 pb-6 text-gray-600 font-bold leading-relaxed text-sm md:text-base">
       {a}
     </div>
   </details>
@@ -32,21 +32,31 @@ const FAQ: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="py-24 px-6 bg-[#BEE3F8] border-y-2 border-black">
-      <div className="max-w-4xl mx-auto">
+    <section id="faq" className="py-24 px-4 md:px-6 bg-[#BEE3F8] border-y-2 border-black">
+      <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">Questions you might have.</h2>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">Questions You Might Have.</h2>
           <p className="font-bold text-gray-700 uppercase tracking-widest text-xs">Saying goodbye to dumb voicemail</p>
         </div>
 
-        <div className="bg-white border-4 border-black rounded-[32px] overflow-hidden neo-shadow-lg mb-16">
-          <div className="bg-black text-white px-6 py-2 text-xs font-black uppercase">General</div>
-          {general.map((item, i) => <AccordionItem key={i} {...item} />)}
+        {/* General Category */}
+        <div className="bg-white border-4 border-black rounded-[32px] md:rounded-[40px] overflow-hidden neo-shadow-lg mb-16 transition-all">
+          <div className="bg-black text-white px-6 py-4 text-sm font-black uppercase tracking-widest">
+            General
+          </div>
+          <div className="bg-white">
+            {general.map((item, i) => <AccordionItem key={i} {...item} />)}
+          </div>
         </div>
 
-        <div className="bg-white border-4 border-black rounded-[32px] overflow-hidden neo-shadow-lg">
-          <div className="bg-[#6366f1] text-white px-6 py-2 text-xs font-black uppercase">💰 Pricing</div>
-          {pricing.map((item, i) => <AccordionItem key={i} {...item} />)}
+        {/* Pricing Category */}
+        <div className="bg-white border-4 border-black rounded-[32px] md:rounded-[40px] overflow-hidden neo-shadow-lg transition-all">
+          <div className="bg-black text-white px-6 py-4 text-sm font-black uppercase tracking-widest">
+            💰 Pricing
+          </div>
+          <div className="bg-white">
+            {pricing.map((item, i) => <AccordionItem key={i} {...item} />)}
+          </div>
         </div>
       </div>
     </section>

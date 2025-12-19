@@ -1,10 +1,15 @@
 
 import React from 'react';
 import { XCircle, CheckCircle, ArrowRight } from 'lucide-react';
+import { ViewState } from '../App';
 
-const HowItWorks: React.FC = () => {
+interface HowItWorksProps {
+  onNavigate: (view: ViewState, sectionId?: string) => void;
+}
+
+const HowItWorks: React.FC<HowItWorksProps> = ({ onNavigate }) => {
   const handleUpgrade = () => {
-    window.open('https://play.google.com/store/apps/details?id=com.holavoicemail.app', '_blank');
+    onNavigate('home', 'cta');
   };
 
   return (
