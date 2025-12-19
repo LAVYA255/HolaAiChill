@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Mail, Phone, MapPin, Clock, ChevronLeft, Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Clock, ChevronLeft, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { ViewState } from '../App';
 
 interface ContactUsProps {
@@ -8,6 +8,48 @@ interface ContactUsProps {
 }
 
 const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === 'submitting') return;
+
+    setStatus('submitting');
+
+    try {
+      const response = await fetch("https://holavoicemail.com/api/support-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus('error');
+    }
+  };
+
   return (
     <div className="animate-fade-in bg-white pb-24">
       {/* Header Section */}
@@ -78,43 +120,92 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
             {/* Contact Form */}
             <div className="bg-white border-4 border-black p-8 md:p-10 rounded-[32px] neo-shadow-lg">
               <h3 className="text-3xl font-black mb-8 tracking-tighter">Send a Message</h3>
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest mb-2">Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="Your full name"
-                    className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+              
+              {status === 'success' ? (
+                <div className="py-12 text-center space-y-4 animate-in fade-in zoom-in duration-300">
+                  <div className="w-20 h-20 bg-green-100 border-4 border-green-500 rounded-full mx-auto flex items-center justify-center">
+                    <CheckCircle className="w-10 h-10 text-green-600" />
+                  </div>
+                  <h4 className="text-2xl font-black">Message Sent!</h4>
+                  <p className="font-bold text-gray-600">Thanks for reaching out. Our team will get back to you shortly.</p>
+                  <button 
+                    onClick={() => setStatus('idle')}
+                    className="mt-6 text-indigo-600 font-black hover:underline"
+                  >
+                    Send another message
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest mb-2">Email</label>
-                  <input 
-                    type="email" 
-                    placeholder="your.email@example.com"
-                    className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest mb-2">Subject</label>
-                  <input 
-                    type="text" 
-                    placeholder="What is this regarding?"
-                    className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest mb-2">Message</label>
-                  <textarea 
-                    rows={4}
-                    placeholder="Tell us more about your inquiry..."
-                    className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-                  ></textarea>
-                </div>
-                <button className="w-full bg-black text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2 neo-shadow hover:translate-y-1 hover:shadow-none transition-all">
-                  Send Message <Send className="w-5 h-5" />
-                </button>
-              </form>
+              ) : (
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                  {status === 'error' && (
+                    <div className="bg-red-50 border-2 border-red-500 p-4 rounded-xl flex items-center gap-3 text-red-700 font-bold animate-in slide-in-from-top duration-300">
+                      <AlertCircle className="w-5 h-5 shrink-0" />
+                      <p className="text-sm">Something went wrong. Please try again or email us directly.</p>
+                    </div>
+                  )}
+                  
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2">Name</label>
+                    <input 
+                      required
+                      type="text" 
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your full name"
+                      className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2">Email</label>
+                    <input 
+                      required
+                      type="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="your.email@example.com"
+                      className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2">Subject</label>
+                    <input 
+                      required
+                      type="text" 
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="What is this regarding?"
+                      className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest mb-2">Message</label>
+                    <textarea 
+                      required
+                      rows={4}
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Tell us more about your inquiry..."
+                      className="w-full bg-white border-2 border-black p-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                    ></textarea>
+                  </div>
+                  
+                  <button 
+                    type="submit"
+                    disabled={status === 'submitting'}
+                    className={`w-full bg-black text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2 neo-shadow hover:translate-y-1 hover:shadow-none transition-all ${status === 'submitting' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  >
+                    {status === 'submitting' ? (
+                      <>Sending... <Loader2 className="w-5 h-5 animate-spin" /></>
+                    ) : (
+                      <>Send Message <Send className="w-5 h-5" /></>
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
 
           </div>
