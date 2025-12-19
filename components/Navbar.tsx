@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { ViewState } from '../App';
-
+import logo from '../logo.png';
 interface NavbarProps {
   onNavigate: (view: ViewState, sectionId?: string) => void;
   currentView: ViewState;
@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentView }) => {
       >
         <div className="bg-black p-0 rounded-xl border-2 border-black neo-shadow flex items-center justify-center overflow-hidden w-8 h-8 md:w-10 md:h-10 group-hover:-translate-y-1 transition-transform">
           <img 
-            src="logo.png"
+            src={logo}
             alt="Hola AI Logo" 
             className="w-full h-full object-cover"
           />
