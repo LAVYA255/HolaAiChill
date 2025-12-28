@@ -21,6 +21,26 @@ export type ViewState = 'home' | 'pricing' | 'privacy' | 'terms' | 'delete' | 'c
 
 const App: React.FC = () => {
   const [view, setView] = useState<ViewState>('home');
+  const pageMap: Record<string, string> = {
+  home: '/',
+  pricing: '/pricing',
+  privacy: '/privacy',
+  terms: '/terms',
+  contact: '/contact',
+  about: '/about',
+  delete: '/delete',
+  cancellation: '/cancellation',
+};
+
+useEffect(() => {
+  if (window.gtag) {
+    window.gtag("config", "G-T3CN74PMYW", {
+      page_title: view,
+      page_path: pageMap[view] || `/${view}`,
+    });
+  }
+}, [view]);
+
 
   // Simple scroll-to-id effect when switching back to home
   const navigateTo = (newView: ViewState, sectionId?: string) => {
