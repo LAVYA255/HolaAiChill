@@ -19,6 +19,7 @@ const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
     const detectIndia = () => {
       try {
         const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        const offsetMinutes = new Date().getTimezoneOffset();
         const locales = navigator.languages && navigator.languages.length > 0
           ? navigator.languages
           : navigator.language
@@ -26,9 +27,11 @@ const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
             : [];
 
         const localeMatch = locales.some((locale) => locale.toLowerCase().includes('-in'));
-        const timeZoneMatch = tz.toLowerCase() === 'asia/kolkata';
+        const timeZone = tz.toLowerCase();
+        const timeZoneMatch = timeZone === 'asia/kolkata' || timeZone === 'asia/calcutta';
+        const offsetMatch = offsetMinutes === -330;
 
-        setIsIndia(localeMatch || timeZoneMatch);
+        setIsIndia(localeMatch || timeZoneMatch || offsetMatch);
       } catch (error) {
         setIsIndia(false);
       }
