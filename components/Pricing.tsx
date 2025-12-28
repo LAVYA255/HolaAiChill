@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Check, Sparkles, Zap, Shield } from 'lucide-react';
 import FAQ from './FAQ';
 import { ViewState } from '../App';
@@ -9,6 +9,64 @@ interface PricingProps {
 }
 
 const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
+  const [isIndia, setIsIndia] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const detectIndia = () => {
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        const locales = navigator.languages && navigator.languages.length > 0
+          ? navigator.languages
+          : navigator.language
+            ? [navigator.language]
+            : [];
+
+        const localeMatch = locales.some((locale) => locale.toLowerCase().includes('-in'));
+        const timeZoneMatch = tz.toLowerCase() === 'asia/kolkata';
+
+        setIsIndia(localeMatch || timeZoneMatch);
+      } catch (error) {
+        setIsIndia(false);
+      }
+    };
+
+    detectIndia();
+  }, []);
+
+  const pricingConfig = useMemo(
+    () =>
+      isIndia
+        ? { locale: 'en-IN', currency: 'INR', monthly: 499, yearly: 4999 }
+        : { locale: 'en-US', currency: 'USD', monthly: 9.99, yearly: 99.99 },
+    [isIndia],
+  );
+
+  const currencyFormatter = useMemo(() => {
+    return new Intl.NumberFormat(pricingConfig.locale, {
+      style: 'currency',
+      currency: pricingConfig.currency,
+      minimumFractionDigits: pricingConfig.currency === 'INR' ? 0 : 2,
+      maximumFractionDigits: pricingConfig.currency === 'INR' ? 0 : 2,
+    });
+  }, [pricingConfig]);
+
+  const formatCurrency = (value: number) => currencyFormatter.format(value);
+
+  const yearlyEquivalent = isIndia
+    ? Math.round(pricingConfig.yearly / 12)
+    : Number((pricingConfig.yearly / 12).toFixed(2));
+
+  const savingsPercentage = Math.max(
+    0,
+    Math.round(
+      ((pricingConfig.monthly * 12 - pricingConfig.yearly) / (pricingConfig.monthly * 12)) * 100,
+    ),
+  );
+
   const handlePricingCTA = () => {
     onNavigate('home', 'cta');
   };
@@ -25,6 +83,9 @@ const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
           <p className="text-lg md:text-xl font-bold text-gray-800 mb-8 max-w-2xl mx-auto">
             Experience the magic of smart voicemail. No hidden fees, no commitment during trial.
           </p>
+          <p className="text-xs md:text-sm font-bold text-gray-600 max-w-xl mx-auto">
+            {isIndia ? "You're seeing prices in INR based on your region." : "You're seeing prices in USD. Rates adjust automatically for customers in India."}
+          </p>
         </div>
       </section>
 
@@ -39,7 +100,7 @@ const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
               <p className="text-gray-500 font-bold text-sm md:text-base">Billed monthly</p>
             </div>
             <div className="flex items-baseline gap-1 mb-6 md:mb-8 text-black">
-              <span className="text-4xl md:text-5xl font-black">$12.99</span>
+              <span className="text-4xl md:text-5xl font-black">{formatCurrency(pricingConfig.monthly)}</span>
               <span className="text-gray-400 font-bold text-sm">/month</span>
             </div>
             
@@ -76,13 +137,13 @@ const Pricing: React.FC<PricingProps> = ({ onNavigate }) => {
             
             <div className="mb-6 md:mb-8">
               <h3 className="text-xl md:text-2xl font-black mb-1 md:mb-2">Annual Pro</h3>
-              <p className="text-indigo-200 font-bold text-sm md:text-base">Billed yearly — Save 35%</p>
+              <p className="text-indigo-200 font-bold text-sm md:text-base">Billed yearly — Save {savingsPercentage}%</p>
             </div>
             <div className="flex items-baseline gap-1 mb-1 md:mb-2">
-              <span className="text-4xl md:text-5xl font-black">$99.99</span>
+              <span className="text-4xl md:text-5xl font-black">{formatCurrency(pricingConfig.yearly)}</span>
               <span className="text-indigo-200 font-bold text-sm">/year</span>
             </div>
-            <p className="text-[10px] md:text-xs font-black text-indigo-300 mb-8">Equivalent to $8.33/month</p>
+            <p className="text-[10px] md:text-xs font-black text-indigo-300 mb-8">Equivalent to {formatCurrency(yearlyEquivalent)}/month</p>
             
             <ul className="space-y-3 md:space-y-4 mb-8 md:mb-10 flex-1">
               {[
